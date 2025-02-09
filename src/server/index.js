@@ -17,7 +17,7 @@ const { getCityPic } = require("./getCityPic");
 //using cors
 app.use(cors());
 
-port = 3000;
+port = 8000;
 
 const username = process.env.USERNAME;
 const WEATHER_KEY = process.env.WEATHER_KEY;
@@ -45,4 +45,4 @@ app.post("/getCityPic", async (req, res) => {
   return res.send(getPic);
 });
 
-app.listen(3000, () => console.log(`server is listening on port ${port}`));
+app.listen(8000, () => console.log(`server is listening on port ${port}`));
