@@ -1,10 +1,5 @@
+require("./public/style/style.scss");
 
-import "./public/style/style.scss"
+const {handleSubmit}=require("./script/cityInp");
 
-import { handleSubmit } from "./script/handleForm";
-
-
-
-export {
-    handleSubmit
-}
+module.exports = {handleSubmit};

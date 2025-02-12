@@ -1,36 +1,32 @@
 import axios from "axios";
-const form = document.querySelector("form");
-const cityInp = document.querySelector("#city");
-const dateInp = document.querySelector("#flightDate");
+const form = document.getElementsByTagName("form")[0];
+const cityInput = document.getElementById("city");
+const dateInput = document.getElementById("flightDate");
 
-const city_error = document.querySelector("#city_error");
-const date_error = document.querySelector("#date_error");
+const cityError = document.getElementById("city_error");
+const dateError = document.getElementById("date_error");
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  //checking if the function is working fine
-  console.log("I am working fine");
-
+const handleSubmit = async (event) => {
+  event.preventDefault();
   if (!validate_inputs()) {
     return;
   }
 
-  const Location = await getCityLoc();
+  const CityLocation = await fetchCityLocation();
 
-  if (Location && Location.error) {
-    city_error.innerHTML = `<i class="bi bi-exclamation-circle-fill me-2"></i>${Location.message}`;
-    city_error.style.display = "block";
+  if (CityLocation && CityLocation.error) {
+    cityError.innerHTML = `<i class="bi bi-exclamation-circle-fill me-2"></i>${CityLocation.message}`;
+    cityError.style.display = "block";
     return;
-  } else if (Location && !Location.error) {
-    const { lng, lat, name } = await Location;
+  } else if (CityLocation && !CityLocation.error) {
+    const { lng, lat, name } = await CityLocation;
 
-    const date = dateInp.value;
+    const date = dateInput.value;
 
     if (!date) {
       console.log("please enter the date");
-      date_error.innerHTML = `<i class="bi bi-exclamation-circle-fill me-2"></i>Please enter the date`;
-      date_error.style.display = "block";
+      dateError.innerHTML = `<i class="bi bi-exclamation-circle-fill me-2"></i>Please enter the date`;
+      dateError.style.display = "block";
       return;
     }
 
@@ -39,8 +35,8 @@ const handleSubmit = async (e) => {
 
       const weather = await getWeather(lng, lat, remainingDays);
       if (weather && weather.error) {
-        date_error.innerHTML = `<i class="bi bi-exclamation-circle-fill me-2"></i>${weather.message}`;
-        date_error.style.display = "block";
+        dateError.innerHTML = `<i class="bi bi-exclamation-circle-fill me-2"></i>${weather.message}`;
+        dateError.style.display = "block";
         return;
       }
       //get the picture of the place
@@ -51,31 +47,31 @@ const handleSubmit = async (e) => {
 };
 
 const validate_inputs = () => {
-  city_error.style.display = "none";
-  date_error.style.display = "none";
-  if (!cityInp.value) {
-    city_error.innerHTML = `<i class="bi bi-exclamation-circle-fill me-2"></i>You need to enter the city`;
-    city_error.style.display = "block";
+  cityError.style.display = "none";
+  dateError.style.display = "none";
+  if (!cityInput.value) {
+    cityError.innerHTML = `<i class="bi bi-exclamation-circle-fill me-2"></i>Enter the city!!`;
+    cityError.style.display = "block";
     return;
   }
-  if (!dateInp.value) {
-    date_error.innerHTML = `<i class="bi bi-exclamation-circle-fill me-2"></i>Please enter the date`;
-    date_error.style.display = "block";
+  if (!dateInput.value) {
+    dateError.innerHTML = `<i class="bi bi-exclamation-circle-fill me-2"></i>Enter the date!!`;
+    dateError.style.display = "block";
     return;
   }
-  if (getRdays(dateInp.value) < 0) {
-    date_error.innerHTML = `<i class="bi bi-exclamation-circle-fill me-2"></i>Date cannot be in the past`;
-    date_error.style.display = "block";
+  if (getRdays(dateInput.value) < 0) {
+    dateError.innerHTML = `<i class="bi bi-exclamation-circle-fill me-2"></i>The date cannot be in the past`;
+    dateError.style.display = "block";
     return;
   }
-  city_error.style.display = "none";
-  date_error.style.display = "none";
+  cityError.style.display = "none";
+  dateError.style.display = "none";
 
   return true;
 };
 
-const getCityLoc = async () => {
-  if (cityInp.value) {
+const fetchCityLocation = async () => {
+  if (cityInput.value) {
     const { data } = await axios.post("http://localhost:8000/getCity", form, {
       headers: {
         "Content-Type": "application/json",
@@ -83,8 +79,8 @@ const getCityLoc = async () => {
     });
     return data;
   } else {
-    city_error.innerHTML = `<i class="bi bi-exclamation-circle-fill me-2"></i> This field cannot be left empty`;
-    city_error.style.display = "block";
+    cityError.innerHTML = `<i class="bi bi-exclamation-circle-fill me-2"></i> This field cannot be left empty`;
+    cityError.style.display = "block";
   }
 };
 
@@ -106,10 +102,8 @@ const getRdays = (date) => {
   // Calculate the time difference in milliseconds
   const timeDiff = endDate.getTime() - startDate.getTime();
 
-  // Convert the time difference to days
-  const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-  // Output the result
-  return daysDiff;
+  // Convert the time difference to days,output it
+  return  Math.ceil(timeDiff / (1000 * 3600 * 24));
 };
 
 //getting the city picture from pixabay
