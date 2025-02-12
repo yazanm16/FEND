@@ -1,8 +1,10 @@
+
+
 $breakpoints: (
-  "sm": 576px,
-  "md": 768px,
-  "lg": 992px,
-  "xl": 1200px
+        "small": 576px,
+        "medium": 768px,
+        "large": 992px,
+        "xlarge": 1200px
 );
 
 @mixin respond-to($breakpoint) {
@@ -11,6 +13,6 @@ $breakpoints: (
       @content;
     }
   } @else {
-    @error "Invalid breakpoint name: #{$breakpoint}. Available breakpoints: #{map-keys($breakpoints)}.";
+    @error "Invalid breakpoint: #{$breakpoint}. Available: #{map-keys($breakpoints)}.";
   }
 }

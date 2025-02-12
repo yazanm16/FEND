@@ -1,6 +1,5 @@
 <p align="center">
-  <a href="" rel="noopener">
- <img width=700px src="./ProjPic.png.png" alt="Project logo"></a>
+  <a href="" rel="noopener"></a>
 </p>
 
 <h3 align="center">Travel App</h3>

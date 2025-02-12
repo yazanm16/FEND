@@ -1,3 +1,5 @@
+
+
 const mockReq = require("jest-mock-express").request;
 const mockRes = require("jest-mock-express").response;
 const axios = require("axios");
@@ -20,10 +22,10 @@ test("should return an error message if no city is found", async () => {
 test("should return city data if a valid city is provided", async () => {
   axios.get.mockResolvedValue({
     data: {
-      geonames: [{ geonameId: 1, name: "ValidCity" }],
+      geonames: [{ geonameId: 1, name: "ValidCity", lat: "12.34", lng: "56.78" }],
     },
   });
 
   const result = await getCityLoc("ValidCityName", "dummy_username");
-  expect(result).toEqual({ geonameId: 1, name: "ValidCity" });
+  expect(result).toEqual({ geonameId: 1, name: "ValidCity", lat: "12.34", lng: "56.78" });
 });

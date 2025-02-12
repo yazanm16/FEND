@@ -1,9 +1,11 @@
+
+
 const MiniCssExtractPlugin = require("mini-css-extract-plugin"),
-  TerserPlugin = require("terser-webpack-plugin"),
-  path = require("path"),
-  common = require("./webpack.common.js");
+    TerserPlugin = require("terser-webpack-plugin"),
+    path = require("path"),
+    common = require("./webpack.common.js");
 const { merge } = require("webpack-merge"),
-  CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+    CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 
 module.exports = merge(common, {
@@ -26,12 +28,10 @@ module.exports = merge(common, {
   },
   optimization: {
     minimize: true,
-    minimizer: [
-      // For webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`), uncomment the next line
-      // `...`,
-      new CssMinimizerPlugin(),
-      new TerserPlugin(),
-    ],
+    minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
+    splitChunks: {
+      chunks: "all",
+    },
   },
   plugins: [
     new MiniCssExtractPlugin({
@@ -40,6 +40,26 @@ module.exports = merge(common, {
     new WorkboxPlugin.GenerateSW({
       clientsClaim: true,
       skipWaiting: true,
+      runtimeCaching: [
+        {
+          urlPattern: ({ request }) => request.destination === "image",
+          handler: "CacheFirst",
+          options: {
+            cacheName: "images",
+            expiration: {
+              maxEntries: 50,
+              maxAgeSeconds: 30 * 24 * 60 * 60, // شهر
+            },
+          },
+        },
+        {
+          urlPattern: ({ url }) => url.pathname.endsWith(".js"),
+          handler: "StaleWhileRevalidate",
+          options: {
+            cacheName: "scripts",
+          },
+        },
+      ],
     }),
   ],
 });

@@ -1,3 +1,5 @@
+
+
 @import './breakPoints';
 
 * {
@@ -5,51 +7,47 @@
 }
 
 body {
-  background-attachment: fixed;
-  background-image: url("../images/yuriy-kovalev-nN1HSDtKdlw-unsplash.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
   font-family: "REM", sans-serif;
+  background: url("../images/yuriy-kovalev-nN1HSDtKdlw-unsplash.jpg") no-repeat center fixed;
+  background-size: cover;
 
   .container {
     min-height: 100vh;
     padding: 20px;
 
     .site-header {
-      background-color: #333;
+      background-color: #222;
       color: #fff;
       padding: 20px;
       text-align: center;
 
       .site-title {
-        font-size: 23px;
+        font-size: 24px;
+        text-transform: uppercase;
+        margin: 0;
 
-        @include respond-to("sm") {
+        @include respond-to("small") {
           font-size: 36px;
         }
 
-        @include respond-to("md") {
+        @include respond-to("medium") {
           font-size: 48px;
         }
-
-        margin: 0;
-        text-align: center;
-        text-transform: uppercase;
       }
     }
 
     #form_row {
       width: 100%;
 
-      @include respond-to("sm") {
+      @include respond-to("small") {
         width: 90%;
       }
 
-      @include respond-to("md") {
+      @include respond-to("medium") {
         width: 75%;
       }
 
-      @include respond-to("lg") {
+      @include respond-to("large") {
         width: 50%;
       }
 
@@ -62,23 +60,13 @@ body {
     .flight_data {
       margin-top: 30px;
 
-      @include respond-to("sm") {
+      @include respond-to("small") {
         text-align: center;
       }
 
-      @include respond-to("lg") {
+      @include respond-to("large") {
         margin-top: 50px;
       }
     }
-  }
-}
-
-body {
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-
-  @include respond-to("sm") {
-    background-size: auto 100%;
   }
 }
