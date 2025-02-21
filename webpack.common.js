@@ -1,17 +1,20 @@
+
 const path = require("path");
-const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
-    entry: "./src/client/index.js",
-    mode: "development", // يمكن تغييره إلى "production" عند بناء المشروع النهائي
+    entry: {
+        main: "./src/client/index.js",
+        cityInp: "./src/client/script/cityInp.js"
+    },
+    mode: "development",
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: "bundle.js",
-        publicPath: "/", // تأكد من أن المسارات تعمل بشكل صحيح
+        filename: "[name].bundle.js",
+        publicPath: "/",
     },
     module: {
         rules: [
@@ -27,10 +30,10 @@ module.exports = {
                 use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
             },
             {
-                test: /\.(png|jpe?g|gif|svg)$/i, // ✅ دعم تحميل الصور
+                test: /\.(png|jpe?g|gif|svg)$/i,
                 type: "asset/resource",
                 generator: {
-                    filename: "assets/images/[hash][ext][query]", // ✅ حفظ الصور في مجلد مخصص داخل `dist`
+                    filename: "assets/images/[hash][ext][query]",
                 },
             },
         ],
@@ -43,6 +46,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: "./src/client/views/index.html",
             filename: "index.html",
+            chunks: ["main", "cityInp"],
             inject: "body",
         }),
         new MiniCssExtractPlugin({
@@ -51,4 +55,3 @@ module.exports = {
         new CleanWebpackPlugin(),
     ],
 };
-
